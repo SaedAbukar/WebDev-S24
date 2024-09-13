@@ -5,6 +5,7 @@ const {
   getBlogById,
   createBlog,
   updateBlog,
+  patchBlog,
   deleteBlog,
 } = require("../controllers/blogController");
 
@@ -23,7 +24,7 @@ router.put("/:blogId", updateBlog);
 // DELETE /blogs/:blogId
 router.delete("/:blogId", deleteBlog);
 
-// Update car using PATCH
-// router.patch('/:carId', patchCar)
+// Update blog using PATCH
+router.patch("/:blogId", patchBlog);
 
 module.exports = router;

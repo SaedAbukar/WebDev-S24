@@ -67,6 +67,30 @@ const updateBlog = async (req, res) => {
   }
 };
 
+// PATCH /blogs/:blogId - Refactored to act as PATCH
+const patchBlog = async (req, res) => {
+  const { blogId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(blogId)) {
+    return res.status(400).json({ message: "Invalid blog ID" });
+  }
+
+  try {
+    const updatedBlog = await Blog.findOneAndUpdate(
+      { _id: blogId },
+      { ...req.body },
+      { new: true } // Removed `overwrite: true` to act like PATCH
+    );
+    if (updatedBlog) {
+      res.status(200).json(updatedBlog);
+    } else {
+      res.status(404).json({ message: "Blog not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update blog" });
+  }
+};
+
 // DELETE /blogs/:blogId
 const deleteBlog = async (req, res) => {
   const { blogId } = req.params;
@@ -92,5 +116,6 @@ module.exports = {
   getBlogById,
   createBlog,
   updateBlog,
+  patchBlog,
   deleteBlog,
 };

@@ -5,6 +5,7 @@ const {
   getUserById,
   createUser,
   updateUser,
+  patchUser,
   deleteUser,
 } = require("../controllers/userController");
 
@@ -23,7 +24,7 @@ router.put("/:userId", updateUser);
 // DELETE /users/:userId
 router.delete("/:userId", deleteUser);
 
-// Update car using PATCH
-// router.patch('/:carId', patchCar)
+// Update user using PATCH
+router.patch("/:userId", patchUser);
 
 module.exports = router;

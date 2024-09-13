@@ -1,4 +1,4 @@
-const Car = require('../models/carModel');
+const Car = require("../models/carModel");
 const mongoose = require("mongoose");
 
 // GET /cars
@@ -17,7 +17,9 @@ const createCar = async (req, res) => {
     const newCar = await Car.create({ ...req.body });
     res.status(201).json(newCar);
   } catch (error) {
-    res.status(400).json({ message: "Failed to create car", error: error.message });
+    res
+      .status(400)
+      .json({ message: "Failed to create car", error: error.message });
   }
 };
 
@@ -65,6 +67,30 @@ const updateCar = async (req, res) => {
   }
 };
 
+// PATCH /cars/:carId - Refactored to act as PATCH
+const patchCar = async (req, res) => {
+  const { carId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(carId)) {
+    return res.status(400).json({ message: "Invalid car ID" });
+  }
+
+  try {
+    const updatedCar = await Car.findOneAndUpdate(
+      { _id: carId },
+      { ...req.body },
+      { new: true } // Removed `overwrite: true` to act like PATCH
+    );
+    if (updatedCar) {
+      res.status(200).json(updatedCar);
+    } else {
+      res.status(404).json({ message: "Car not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update car" });
+  }
+};
+
 // DELETE /cars/:carId
 const deleteCar = async (req, res) => {
   const { carId } = req.params;
@@ -90,5 +116,6 @@ module.exports = {
   getCarById,
   createCar,
   updateCar,
+  patchCar,
   deleteCar,
 };

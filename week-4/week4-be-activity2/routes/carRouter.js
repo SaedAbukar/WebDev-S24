@@ -5,8 +5,8 @@ const {
   getCarById,
   createCar,
   updateCar,
+  patchCar,
   deleteCar,
-  // patchCar
 } = require("../controllers/carControllers");
 
 // GET /cars
@@ -24,7 +24,7 @@ router.put("/:carId", updateCar);
 // DELETE /cars/:carId
 router.delete("/:carId", deleteCar);
 
-// Update car using PATCH 
-// router.patch('/:carId', patchCar)
+// Update car using PATCH
+router.patch("/:carId", patchCar);
 
 module.exports = router;
